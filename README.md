@@ -1,27 +1,19 @@
-# CS545-lab5
+# CS545-lab6
 
-LAB 5
-CS545 – Authentication (JWT)
- 
+LAB 6
 
-Based on your previous lab, you will add authentication to all actions that were previously made. 
+Group members:
 
-There will be two roles (USER, ADMIN). The ADMIN should access all the pages that a user can access plus an /admin path (you should add this path).
+Ganbayar Tsogbadrakh 
 
-The User should access all paths except the /admin path. 
-
-You will be mapping the authentication with the JPA database in your project. There should be a login path /authenticate where a user enters his/her credentials. If the user provides valid credentials, it should generate a token. 
-
-Note: “In this assignment you will be manually copying the token to the authentication header when using postman or any other alternative.”
+Yumjirdulam Chinbat 
 
 
-Optional:
+ We work as group and secured refreshToken in our way. It is very hard to secure if refreshToken is stolen.
+ But we improved 2 things in our project to secure refreshToken.
 
-When a user makes a post, it should read the user information and when it saves the post, it will also store the user that made that post (without passing a userId), it should be extracted from the authenticated user.  
-
-
-
-
-You may refer to the demo in the link below to integrate the JWT to your project. 
-https://github.com/muhyidean/spring-security-1.git
+ 1. shortened refreshToken expiration date. 
+ 2. Our application always require valid and expired accessToken for the new token request. 
+ 	if Hacker stole refreshToken and send the new accessToken request , our server wont provide the accessToken. 
+ 	if Hacker send the any String or another expired accessToken not issued by our secret, also we dont give him an accessToken :)
 
