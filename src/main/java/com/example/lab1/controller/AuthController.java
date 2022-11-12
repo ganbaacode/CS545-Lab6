@@ -3,6 +3,8 @@ package com.example.lab1.controller;
 
 import com.example.lab1.entity.User;
 import com.example.lab1.entity.dto.request.LoginRequest;
+import com.example.lab1.entity.dto.request.RefreshTokenRequest;
+import com.example.lab1.entity.dto.response.LoginResponse;
 import com.example.lab1.service.UserService;
 import com.example.lab1.service.impl.AuthServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/authenticate")
 @CrossOrigin(origins = "*",allowedHeaders = "*")
 @RequiredArgsConstructor
 public class AuthController {
@@ -19,7 +21,7 @@ public class AuthController {
     private final AuthServiceImpl authService;
     private final UserService userService;
 
-    @PostMapping("authenticate")
+    @PostMapping("/")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         var loginResponse = authService.login(loginRequest);
         return ResponseEntity.ok().body(loginResponse);
@@ -28,6 +30,11 @@ public class AuthController {
     @PostMapping("register")
     public User addUser(@RequestBody User user){
         return userService.addUser(user);
+    }
+
+    @PostMapping("/refreshToken")
+    public LoginResponse refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest){
+        return authService.refreshToken(refreshTokenRequest);
     }
 
 

@@ -37,7 +37,7 @@ public class JwtFilter extends OncePerRequestFilter {
             token = authorizationHeader.substring(7);
             try{
                 email = jwtUtil.getUsernameFromToken(token);
-            }catch (ExpiredJwtException e){ // TODO come back here!
+            }catch (ExpiredJwtException e){
                 String isRefreshToken = request.getHeader("isRefreshToken");
             }
 

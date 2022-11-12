@@ -16,6 +16,8 @@ public class JwtUtil {
 
     private final long expiration= 5*60*60*60;
 
+    private final long refreshExpiration = 1000 * 60 * 60;
+
 
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = getAllClaimsFromToken(token);
@@ -58,6 +60,23 @@ public class JwtUtil {
                 .compact();
     }
 
+    public String generateRefreshToken(String email) {
+        return Jwts.builder()
+                .setSubject(email)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + refreshExpiration))
+                .signWith(SignatureAlgorithm.HS512, secret)
+                .compact();
+    }
+    public String doGenerateToken( String subject) {
+        return Jwts.builder()
+                .setSubject(subject)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(SignatureAlgorithm.HS512, secret)
+                .compact();
+    }
+
     public boolean validateToken(String token) {
         try {
             Jwts.parser()
@@ -93,5 +112,13 @@ public class JwtUtil {
             System.out.println(e.getMessage());
         }
         return result;
+    }
+
+    public String getSubject(String token) {
+        return Jwts.parser()
+                .setSigningKey(secret)
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 }
